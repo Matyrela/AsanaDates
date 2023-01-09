@@ -1,5 +1,12 @@
 import eel
 import datetime
+import asana
+
+def generateClient():
+    personal_access_token = loadToken()
+    global client
+    client = asana.Client.access_token(personal_access_token)
+    
 
 @eel.expose
 def tokenExists():
@@ -69,7 +76,7 @@ def loadToken():
         
     return data[14:-1]
 
-def ProjectID(client):
+def ProjectID():
     config = open("config/config.conf" , "r")
     data = config.read()
     if("PID" not in data):
@@ -99,9 +106,14 @@ def ProjectID(client):
         LPID = pids.split(",")
         return LPID
 
-def TaskID(client, PID):
+def TaskID(PID):
     config = open("config/config.conf" , "r")
     data = config.read()
+    Names = []
+    for names in range(0,len(PID)):
+        if(names % 2 != 0):
+            Names.append(PID[names])
+
     if("TID" not in data):
         config.close()
         config = open("config/config.conf" , "w")
@@ -120,23 +132,23 @@ def TaskID(client, PID):
             if(count % 2 == 0):
                 for asanaData in LasanaData:
                     for p in asanaData:
-                        text = text + p["gid"] + "," + p["name"] + ","
+                        text = text + p["gid"] + "," + p["name"] + "," # Status  + " - " + p[""]
                     conf = text[:-1]
                     toFile = toFile + conf + "\n"
             count = count + 1
         config.write(data + toFile)
     config.close()
-    config = open("config/config.conf" , "r")
-    data = config.read()
-    LTID = []
-    data = data.split("\n")
-    pids= data[1][6:]
-    if("," not in pids):
-        LTID.append(pids)
-        return LTID
-    else:
-        LTID = pids.split(",")
-        return LTID
+    with open("config/config.conf", "r") as fp:
+            lines = fp.readlines()
+            TaskList = []
+            c = 0
+            for line in lines:
+                if line.find("TID:") != -1:
+                    line = line[line.find("=") + 2:-1]
+                    line = Names[c] + "," + line
+                    TaskList.append(line)
+                    c = c + 1
+            return TaskList
 
 @eel.expose
 def GetTaskByName(PID):
@@ -148,16 +160,23 @@ def GetTaskByName(PID):
                 line = line[cut:]
                 line = line[:-1]
                 tasks = line.split(",")
-                TaskList = []
+                TasksNames = []
+                TasksID = []
+                Tasks = []
                 count = 0
                 for cosita in tasks:
                     if(count % 2 != 0):
-                        TaskList.append(cosita)
+                        TasksNames.append(cosita)
+                    else:
+                        TasksID.append(cosita)
                     count = count + 1
-                
-                return TaskList
 
-def getDates(TID, client):
+                Tasks.append(TasksNames)
+                Tasks.append(TasksID)
+                
+                return Tasks
+@eel.expose
+def getDates(TID):
     url = "/tasks/" + str(TID) + "/stories"
     AsanaData = client.get(url, "")
     Story = []
