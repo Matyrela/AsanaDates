@@ -143,7 +143,7 @@ def GetTaskByName(PID):
     with open("config/config.conf" , "r") as fp:
         lines = fp.readlines()
         for line in lines:
-            if line.find(":"+PID) != -1:
+            if line.find(":" + PID) != -1:
                 cut = 7 + len(PID)
                 line = line[cut:]
                 line = line[:-1]

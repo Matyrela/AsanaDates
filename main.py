@@ -19,7 +19,7 @@ def main():
 
     GetTaskByName("Holis")
 
-    eel.start("index.html", size=(1200,800))
+    eel.start("index.html", size=(1200,800), mode='edge')
 
 
 main()
