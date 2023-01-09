@@ -1,5 +1,5 @@
 import eel
-from random import randint
+import datetime
 
 @eel.expose
 def tokenExists():
@@ -140,7 +140,7 @@ def TaskID(client, PID):
 
 @eel.expose
 def GetTaskByName(PID):
-    with open("config/config.conf" , "r") as fp:
+    with open("config/config.conf", "r") as fp:
         lines = fp.readlines()
         for line in lines:
             if line.find(":" + PID) != -1:
@@ -156,3 +156,26 @@ def GetTaskByName(PID):
                     count = count + 1
                 
                 return TaskList
+
+def getDates(TID, client):
+    url = "/tasks/" + str(TID) + "/stories"
+    AsanaData = client.get(url, "")
+    Story = []
+    created = AsanaData[0]["created_at"]
+    created = created.split("T")
+    created = created[0]
+    created = created.split("-")
+    created = datetime.datetime(int(created[0]), int(created[1]), int(created[2]))
+
+    Story.append("Created at " + created.strftime('%B %d %Y'))
+
+    for p in range(0,len(AsanaData)):
+        name = str(AsanaData[p]["created_by"]["name"])
+        if("due" in str(AsanaData[p]["text"])):
+            change = str(AsanaData[p]["text"])
+
+            change = change[len(name) + 1:]
+            Story.append(change)
+
+    print(Story)
+    return Story

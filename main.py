@@ -5,7 +5,7 @@ from time import sleep
 
 def main():
 
-    eel.init("web")
+    #eel.init("web")
 
     if(loadToken() == -1):
         return
@@ -16,10 +16,14 @@ def main():
     #get projectID from file, if not exists get from API
     PID = ProjectID(client)
     TID = TaskID(client, PID)
+    
+    getDates(1203668073408658, client)
+
+
 
     GetTaskByName("Holis")
 
-    eel.start("index.html", size=(1200,800), mode='edge')
+    #eel.start("index.html", size=(1200,800), mode='opera')
 
 
 main()
