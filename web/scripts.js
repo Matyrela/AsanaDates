@@ -63,11 +63,6 @@ function AddTasks(ProjectName, TasksArr, /*TasksIDs ,*/innerBuilder, MainPage) {
         
             <ul style="margin-left: 1%; color: white;" id="${i}">
             `;
-
-            //TaskDates tiene los datos de la fecha en un array de string
-            //Problema es una promesa :P
-            //Deberia de hacer el forEach de abajo :P
-
             TaskDates.forEach(d => {
                 innerBuilder = innerBuilder + `
                     <li>${d}</li>
