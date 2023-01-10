@@ -76,7 +76,8 @@ def loadToken():
             config.close()
             return -1
     else:
-        mkdir("config")
+        if (path.exists("config") != True):
+            mkdir("config")
         f = open("config/config.conf", "a")
         f.write("AccessToken = \n")
         f.close()
