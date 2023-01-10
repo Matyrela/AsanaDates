@@ -88,21 +88,9 @@ def loadToken():
             config.close()
         if ("AccessToken = " in data):
             print("TOKEN:", data.find("AccessToken = "), len("AccessToken = "))
-            token = data[data.find("AccessToken = ")+len("AccessToken = "): -1]
+            token = data[data.find("AccessToken = ")+len("AccessToken = "): -1].strip()
             print(token)
-    return -1
-    """
-    with open("config/config.conf", "r") as token:
-        read = token.readline
-        read[]
-    return
-    """
-        
-    
-    data = data[14:]
-    data = data.replace("\n", "")
-
-    return data
+    return token
 
 def ProjectID():
     config = open("config/config.conf" , "r")
