@@ -1,6 +1,6 @@
 import eel
 from functions import *
-from time import sleep
+
 
 def main():
 
@@ -8,6 +8,7 @@ def main():
 
     if(loadToken() == -1):
         return
+        
     generateClient();
     
     
@@ -19,5 +20,7 @@ def main():
 
     eel.start("index.html", size=(1200,800), mode='opera')
 
+
+    
 
 main()

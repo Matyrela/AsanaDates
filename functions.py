@@ -1,6 +1,7 @@
 import eel
 import datetime
 import asana
+from os import path, mkdir
 
 def generateClient():
     personal_access_token = loadToken()
@@ -64,17 +65,28 @@ def changeToken(newToken):
 
 
 def loadToken():
-    config = open("config/config.conf" , "r")
-    data = config.readline()
-    if("AccessToken" not in data):
-        print("Config file fail")
-        config.close()
-        config = open("config/config.conf" , "w")
-        config.write("AccessToken = ")
-        config.close()
+    if(path.exists("config/config.conf")):
+        config = open("config/config.conf" , "r")
+        data = config.readline()
+        if("AccessToken =" not in data):
+            print("Config file fail")
+            config.close()
+            config = open("config/config.conf" , "w")
+            config.write("AccessToken = ")
+            config.close()
+            return -1
+    else:
+        mkdir("config")
+        f = open("config/config.conf", "a")
+        f.write("AccessToken = \n")
+        f.close()
+        print("Fill config/config.conf")
         return -1
-        
-    return data[14:-1]
+    
+    data = data[14:]
+    data = data.replace("\n", "")
+
+    return data
 
 def ProjectID():
     config = open("config/config.conf" , "r")
