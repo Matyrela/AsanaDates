@@ -72,23 +72,28 @@ def loadToken():
         mkdir("config")
     print("Loading CONFIG file")
     if (path.exists("config/config.conf") != True):
-        f = open("config/config.conf", "a")
-        f.write("AccessToken = \n")
-        f.close()
+        with open("config/config.conf", "a") as f:
+            f.write("AccessToken = \n")
+            f.close()
         print("Creating CONFIG file")
     print("Loading TOKEN")
     if(path.exists("config/config.conf")):
-        config = open("config/config.conf" , "r")
-        data = config.readline()
+        data = ""
+        with open("config/config.conf" , "r") as conf:
+            data = conf.readline()
+            conf.close()
         if("AccessToken =" not in data):        
             print("Config file fail")
-            config.close()
-            config = open("config/config.conf" , "w")
-            config.write("AccessToken = ")
-            config.close()
+            with open("config/config.conf" , "w") as config:
+                config.write("AccessToken = ")
+                config.close()
+            return -1
         if ("AccessToken = " in data):
             print("TOKEN:", data.find("AccessToken = "), len("AccessToken = "))
             token = data[data.find("AccessToken = ")+len("AccessToken = "): -1].strip()
+            if len(token) <= 0:
+                print("Not founded TOKEN in CONFIG file")
+                return -1
             print(token)
     return token
 
