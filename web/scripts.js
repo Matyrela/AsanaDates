@@ -65,6 +65,7 @@ function AddTasks(ProjectName, value, /*TasksIDs ,*/innerBuilder, MainPage) {
 
 
 async function AddTaskArr (ProjectName, i, TaskDates, innerBuilder, MainPage) {
+            //  Cargar cambios
             innerBuilder += `
                 <div style="margin-left: 3%;">
                 <h4 style="color: #ffffff;">${i}</h3>
