@@ -71,18 +71,34 @@ async function AddTaskArr (ProjectName, i, TaskDates, innerBuilder, MainPage) {
                 <h4 style="color: #ffffff;">${i}</h3>
                 <ul style="margin-left: 1%; color: white;" id="${i}">
             `;
+            c = 0;
+            max = TaskDates.length - 1;
+            console.log(max);
+
             TaskDates.forEach(d => {
-                innerBuilder = innerBuilder + `
-                    <li>${d}</li>
-                `;
+                switch(c){
+                    case 0:
+                        innerBuilder = innerBuilder + `
+                        <li style="color: LightGreen;">${d}</li>
+                    `;
+                    break;
+                    case max:
+                        case 0:
+                            innerBuilder = innerBuilder + `
+                            <li style="color: #C24641;">${d}</li>
+                        `;
+                        break;
+                    default:
+                        innerBuilder = innerBuilder + `
+                        <li>${d}</li>
+                    `;
+                    break;
+                }
+                c += 1;
             })
             document.getElementById(ProjectName).innerHTML += innerBuilder;
 }
 
-
-function AddDates(element, el, innerBuilder, MainPage){
-    
-}
 
 /*
 tasks.forEach(i => {

@@ -193,8 +193,8 @@ def getDates(TID):
         if("due" in str(AsanaData[p]["text"])):
             change = str(AsanaData[p]["text"])
 
-            change = change[len(name) + 1:]
+            change = change[len(name) + 2:]
+            change = "C" + change
             Story.append(change)
 
-    print(Story)
     return Story
