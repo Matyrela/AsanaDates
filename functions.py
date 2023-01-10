@@ -217,5 +217,9 @@ def getDates(TID):
             change = change[len(name) + 2:]
             change = "C" + change
             Story.append(change)
+    if(Story[len(Story) - 1].find("Changed the due date to") != -1):
+        Final = Story[len(Story) - 1].replace("Changed the due date to", "Delivery on")
+        Story.append(Final)
+    
 
     return Story

@@ -49,13 +49,13 @@ function jsHTMLInit(){
 
 function AddTasks(ProjectName, value, /*TasksIDs ,*/innerBuilder, MainPage) {
     let count = 0;
-    MainPage.innerHTML += `<div id="${ProjectName}"><h2 class="mt-4" style="color: #ffffff"> ${ProjectName} </h2>`;
+    MainPage.innerHTML += `<hr><div id="${ProjectName}" class="card rounded bg-dark" style="padding: 0 10px;"> <h2 class="mt-4" style="color: #ffffff"> ${ProjectName} </h2>`;
     value[0].forEach(i => {
         eel.getDates(value[1][count])().then(
         function (value) {
             AddTaskArr(ProjectName,i, value, innerBuilder, MainPage).then(
                 function (value) {
-                    innerBuilder += `</ul></div>`,innerBuilder += `<hr></div>`
+                    innerBuilder += `</ul></div>`,innerBuilder += `</div>`
                     if (document.getElementById("delLoadingBar") != null) {
                         document.getElementById("delLoadingBar").innerHTML = "";
                     }
@@ -65,7 +65,7 @@ function AddTasks(ProjectName, value, /*TasksIDs ,*/innerBuilder, MainPage) {
             )
         count++;
     })
-    
+    innerBuilder = innerBuilder;
     MainPage.innerHTML += innerBuilder;
 }
 
