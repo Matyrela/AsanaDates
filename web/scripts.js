@@ -27,11 +27,12 @@ function jsHTMLInit(){
         MainPage = document.getElementById("MainPageNames");
         let innerBuilder = "";
 
+        // Cargar las listas
         Names.forEach(element => {
             MainPageinner = MainPage.innerHTML;
             innerBuilder += MainPageinner;
             TasksArr = eel.GetTaskByName(element)();
-            //Aqui estuvo Z
+            // Cargar los valores con una promesa
             TasksArr.then(
                 function(value) {AddTasks(element,value, innerBuilder, MainPage);},
                 function(error) {console.log("Hubo un error maestro!");}
@@ -41,45 +42,42 @@ function jsHTMLInit(){
         });   
       })
 
-      MainPage.innerHTML = innerBuilder;
+    //    MainPage.innerHTML = innerBuilder;
 }
 
 
 
-function AddTasks(ProjectName, TasksArr, /*TasksIDs ,*/innerBuilder, MainPage) {
-    innerBuilder += `
-    <div id="${ProjectName}">
-        <h2 class="mt-4" style="color: #ffffff"> ${ProjectName} </h2>
-    `;
+function AddTasks(ProjectName, value, /*TasksIDs ,*/innerBuilder, MainPage) {
+    let count = 0;
+    MainPage.innerHTML += `<div id="${ProjectName}"><h2 class="mt-4" style="color: #ffffff"> ${ProjectName} </h2>`;
+    value[0].forEach(i => {
+        eel.getDates(value[1][count])().then(
+        function (value) {
+            AddTaskArr(ProjectName,i, value, innerBuilder, MainPage).then(innerBuilder += `</ul></div>`,innerBuilder += `<hr></div>`)
+                }
+            )
+        count++;
+    })
+    
+    MainPage.innerHTML += innerBuilder;
+}
 
-    count = 0;
-    TasksArr[0].forEach(i => {
-        TaskDates = eel.getDates(TasksArr[1][count])();
-        console.log(TaskDates);
 
-        innerBuilder = innerBuilder + `
-        <div style="margin-left: 3%;">
-            <h4 style="color: #ffffff;">${i}</h3>
-        
-            <ul style="margin-left: 1%; color: white;" id="${i}">
+
+async function AddTaskArr (ProjectName, i, TaskDates, innerBuilder, MainPage) {
+            innerBuilder += `
+                <div style="margin-left: 3%;">
+                <h4 style="color: #ffffff;">${i}</h3>
+                <ul style="margin-left: 1%; color: white;" id="${i}">
             `;
             TaskDates.forEach(d => {
                 innerBuilder = innerBuilder + `
                     <li>${d}</li>
                 `;
             })
-            //------------------------------------------------------------
-
-        innerBuilder = innerBuilder + `  
-            </ul>
-        </div>
-        `;
-        
-        count = count + 1;
-    })
-    innerBuilder += `<hr></div>`;
-    MainPage.innerHTML += innerBuilder;
+            document.getElementById(ProjectName).innerHTML += innerBuilder;
 }
+
 
 function AddDates(element, el, innerBuilder, MainPage){
     
