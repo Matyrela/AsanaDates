@@ -53,7 +53,14 @@ function AddTasks(ProjectName, value, /*TasksIDs ,*/innerBuilder, MainPage) {
     value[0].forEach(i => {
         eel.getDates(value[1][count])().then(
         function (value) {
-            AddTaskArr(ProjectName,i, value, innerBuilder, MainPage).then(innerBuilder += `</ul></div>`,innerBuilder += `<hr></div>`)
+            AddTaskArr(ProjectName,i, value, innerBuilder, MainPage).then(
+                function (value) {
+                    innerBuilder += `</ul></div>`,innerBuilder += `<hr></div>`
+                    if (document.getElementById("delLoadingBar") != null) {
+                        document.getElementById("delLoadingBar").innerHTML = "";
+                    }
+                }
+            )
                 }
             )
         count++;
