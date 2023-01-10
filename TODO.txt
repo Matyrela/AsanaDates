@@ -1,0 +1,3 @@
+Boton para borrar config, menos el token
+Boton para obtener fechas de tareas sin registros ("Advertir que va a usar doble api call")
+agarrar el token por consola
