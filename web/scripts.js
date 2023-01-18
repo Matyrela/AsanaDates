@@ -80,7 +80,6 @@ async function AddTaskArr (ProjectName, i, TaskDates, innerBuilder, MainPage) {
             `;
             c = 0;
             max = TaskDates.length - 1;
-            console.log(max);
 
             TaskDates.forEach(d => {
                 switch(c){
@@ -104,40 +103,22 @@ async function AddTaskArr (ProjectName, i, TaskDates, innerBuilder, MainPage) {
                 c += 1;
             })
             document.getElementById(ProjectName).innerHTML += innerBuilder;
+
+            jsApiCallInit();
+            
 }
 
+function jsApiCallInit(){
+    NOApiCalls = eel.TotalApiCalls()();
+    NOApiCalls.then(
+        function(value) {ApiCallInjector(value);},
+        function(error) {console.log("Hubo un error maestro!");}
+    );
+}
 
-/*
-tasks.forEach(i => {
-                    innerBuilder = innerBuilder + `
-                    <div style="margin-left: 3%;">
-                        <h4 style="color: #ffffff;">${i}</h3>
-                    </div>
-                    <ul style="margin-left: 6%; color: white;">
-                        <li>Creada: 26/6</li>
-                        <li>26/6 --> 27/6</li>
-                        <li>27/6 --> 30/6</li>
-                        <li>30/6 --> 5/7</li>
-                        <li>Finaliza: 5/7</li>
-                    </ul>
-                    `;
-                })
-/*
-
-
-/*
-    <div style="margin-left: 3%;">
-        <h4 style="color: #ffffff;">Tarea Ejemplo</h3>
-    </div>
-    <ul style="margin-left: 6%; color: white;">
-        <li>Creada: 26/6</li>
-        <li>26/6 --> 27/6</li>
-        <li>27/6 --> 30/6</li>
-        <li>30/6 --> 5/7</li>
-        <li>Finaliza: 5/7</li>
-    </ul>
-    <hr style="color:#ffffff">
-*/
+function ApiCallInjector(num){
+    document.getElementById("APICalls").innerHTML = num;
+}
 
 function jsdates(){
     eel.getDates()(function(exists){          

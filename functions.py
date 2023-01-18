@@ -2,10 +2,13 @@ import eel
 import datetime
 import asana
 from os import path, mkdir
-import pickle
 
 def generateClient():
     personal_access_token = loadToken()
+
+    global apicalls
+    apicalls = 0
+
     global client
     client = asana.Client.access_token(personal_access_token)
     
@@ -83,7 +86,8 @@ def loadToken():
             data = conf.readline()
             conf.close()
         if("AccessToken =" not in data):        
-            print("Config file fail")
+            print("Config file fail, regenerating...")
+            print("rerun this program please.")
             with open("config/config.conf" , "w") as config:
                 config.write("AccessToken = ")
                 config.close()
@@ -92,7 +96,14 @@ def loadToken():
             print("TOKEN:", data.find("AccessToken = "), len("AccessToken = "))
             token = data[data.find("AccessToken = ")+len("AccessToken = "): -1].strip()
             if len(token) <= 0:
-                print("Not founded TOKEN in CONFIG file")
+                print("TOKEN not found in CONFIG file")
+                
+                InputToken = input("Please enter your TOKEN: ")
+                with open("config/config.conf" , "w") as config:
+                    config.write("AccessToken = " + InputToken + "\n")
+                    config.close()
+                    print("Token saved")
+                    print("rerun this program please.")
                 return -1
             print(token)
     return token
@@ -105,6 +116,8 @@ def ProjectID():
         config = open("config/config.conf" , "w")
         print("Getting gid of proyects...")
         asanaData = client.get("/projects", "")
+        global apicalls
+        apicalls = apicalls + 1
 
         text = "PID = "
         for p in asanaData:
@@ -148,6 +161,8 @@ def TaskID(PID):
             if(count % 2 == 0):
                 url = "/projects/" + projects + "/tasks"
                 LasanaData.append(client.get(url, ""))
+                global apicalls
+                apicalls = apicalls + 1
                 text = "TID:" + PID[count + 1]
             text = text + " = "
             if(count % 2 == 0):
@@ -200,6 +215,8 @@ def GetTaskByName(PID):
 def getDates(TID):
     url = "/tasks/" + str(TID) + "/stories"
     AsanaData = client.get(url, "")
+    global apicalls
+    apicalls = apicalls + 1
     Story = []
     created = AsanaData[0]["created_at"]
     created = created.split("T")
@@ -223,3 +240,8 @@ def getDates(TID):
     
 
     return Story
+
+@eel.expose
+def TotalApiCalls():
+    global apicalls
+    return apicalls
