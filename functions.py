@@ -2,17 +2,12 @@ import eel
 import datetime
 import asana
 from os import path, mkdir
-
 def generateClient():
     personal_access_token = loadToken()
-
     global apicalls
     apicalls = 0
-
     global client
     client = asana.Client.access_token(personal_access_token)
-    
-
 @eel.expose
 def tokenExists():
     config = open("config/config.conf" , "r")
@@ -21,53 +16,42 @@ def tokenExists():
     if(token == ""):
         return False
     return True
-
 @eel.expose
 def GetNames():
     config = open("config/config.conf" , "r")
     data = config.read()
     LData = data.split("\n")
     LData = LData[1].split(",")
-
     Names = []
     count = 0
     for a in LData:
         if(count % 2 != 0):
             Names.append(a)
         count = count + 1
-
     return Names
-
 @eel.expose
 def GetTasks():
     config = open("config/config.conf" , "r")
     data = config.read()
     LData = data.split("\n")
     LData = LData[1].split(",")
-
     Names = []
     count = 0
     for a in LData:
         if(count % 2 != 0):
             Names.append(a)
         count = count + 1
-
     return Names
-
 @eel.expose
 def changeToken(newToken):
     config = open("config/config.conf" , "w")
     data = config.readline()
     data = data.split("\n")
-
     data[0] = "AccessToken = " + newToken
     for text in data:
         config.write(text + "\n")
     config.close
-
     return True
-
-
 def loadToken():
     print("Loading CONFIG folder")
     if (path.exists("config") != True):
@@ -96,8 +80,7 @@ def loadToken():
             print("TOKEN:", data.find("AccessToken = "), len("AccessToken = "))
             token = data[data.find("AccessToken = ")+len("AccessToken = "): -1].strip()
             if len(token) <= 0:
-                print("TOKEN not found in CONFIG file")
-                
+                print("TOKEN not found in CONFIG file") 
                 InputToken = input("Please enter your TOKEN: ")
                 with open("config/config.conf" , "w") as config:
                     config.write("AccessToken = " + InputToken + "\n")
@@ -107,7 +90,6 @@ def loadToken():
                 return -1
             print(token)
     return token
-
 def ProjectID():
     config = open("config/config.conf" , "r")
     data = config.read()
@@ -118,14 +100,12 @@ def ProjectID():
         asanaData = client.get("/projects", "")
         global apicalls
         apicalls = apicalls + 1
-
         text = "PID = "
         for p in asanaData:
             text = text + p["gid"] + "," + p["name"] + ","
         conf = text[:-1]
         config.write(data + conf + "\n")
         config.close()
-    
     config.close()
     config = open("config/config.conf" , "r")
     data = config.read()
@@ -139,7 +119,6 @@ def ProjectID():
     else:
         LPID = pids.split(",")
         return LPID
-
 def TaskID(PID):
     config = open("config/config.conf" , "r")
     data = config.read()
@@ -147,7 +126,6 @@ def TaskID(PID):
     for names in range(0,len(PID)):
         if(names % 2 != 0):
             Names.append(PID[names])
-
     if("TID" not in data):
         config.close()
         config = open("config/config.conf" , "w")
@@ -185,7 +163,6 @@ def TaskID(PID):
                     TaskList.append(line)
                     c = c + 1
             return TaskList
-
 @eel.expose
 def GetTaskByName(PID):
     with open("config/config.conf", "r") as fp:
@@ -206,10 +183,8 @@ def GetTaskByName(PID):
                     else:
                         TasksID.append(cosita)
                     count = count + 1
-
                 Tasks.append(TasksNames)
                 Tasks.append(TasksID)
-                
                 return Tasks
 @eel.expose
 def getDates(TID):
@@ -223,24 +198,18 @@ def getDates(TID):
     created = created[0]
     created = created.split("-")
     created = datetime.datetime(int(created[0]), int(created[1]), int(created[2]))
-
     Story.append("Created at " + created.strftime('%B %d %Y'))
-
     for p in range(0,len(AsanaData)):
         name = str(AsanaData[p]["created_by"]["name"])
         if("due" in str(AsanaData[p]["text"])):
             change = str(AsanaData[p]["text"])
-
             change = change[len(name) + 2:]
             change = "C" + change
             Story.append(change)
     if(Story[len(Story) - 1].find("Changed the due date to") != -1):
         Final = Story[len(Story) - 1].replace("Changed the due date to", "Delivery on")
         Story.append(Final)
-    
-
     return Story
-
 @eel.expose
 def TotalApiCalls():
     global apicalls
