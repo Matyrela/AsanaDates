@@ -130,3 +130,14 @@ function jsdates(){
       })
 }
 
+function JSWipeData(){
+    eel.WipeData()(function(deleted){
+        if(deleted == true){
+            alert("Datos borrados, cerrando instancia...");
+            window.close();
+        }else{
+            alert("Error");
+        }
+    });
+}
+

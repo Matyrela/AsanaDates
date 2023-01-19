@@ -245,3 +245,11 @@ def getDates(TID):
 def TotalApiCalls():
     global apicalls
     return apicalls
+
+@eel.expose
+def WipeData():
+    tk = loadToken()
+    with open("config/config.conf" , "w") as config:
+        config.write("AccessToken = " + tk + "\n")
+        config.close()
+        return True

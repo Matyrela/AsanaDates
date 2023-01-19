@@ -22,7 +22,7 @@
         </ul>
         <hr>
           <div style="display: flex; justify-content: space-between;">
-            <p style="margin-bottom: 0rem !important;"><a href="https://developers.asana.com/docs/standard-rate-limits" target="_blank" style="display:inline-block">ApiCalls</a>:</p>
+            <p style="margin-bottom: 0rem !important;"><a href="https://developers.asana.com/docs/standard-rate-limits" target="_blank" style="display:inline-block">API Calls</a>:</p>
             <a style="display:inline-block" id="APICalls">0</a>
           </div>
         <hr>
@@ -30,14 +30,20 @@
       	</div>
 
       	<!-- Page content-->
-      	<div id="page-content-wrapper" style="background-color: #999999;width: 100%;">
+      	<div id="page-content-wrapper" class="container-fluid" style="background-color: #999999;width: 100%;">
 
-        	<div class="container-fluid" id="MainPageNames">
+          <!--Explicacion del programeinchion-->
+          <hr>
+            <div id="Help" class="card rounded bg-dark" style="padding: 0 10px;">
+              <h2 class="mt-4" style="color: #ffffff"> Acerca de este programa </h2>
+              <div style="margin-left: 3%;">
+                <p style="color: #ffffff;">Este programa, usando su token personal, accede a sus proyectos y las tareas de los mismos guardando los IDs en el archivo config.conf, con estos IDs luego se piden datos como las modificaciones de fecha de entrega, los IDs de los proyectos se guardan para que en la siguiente ejecución del código el programa evite hacer llamadas a la API que no son relevantes, ya que la misma tiene un límite.<br> Es importante, que si se crea un nuevo proyecto en Asana, deberás apretar el botón de borrar datos, así el programa borrara los IDs guardados y pedirá a la API los proyectos del usuario incluyendo los nuevos.</p>
+              </div>
+            </div>
 
-            
-
+        	<div id="MainPageNames">
           </div>
-          <div class="container-fluid">
+          <div>
             <hr>
           </div>
 
@@ -48,6 +54,11 @@
               </div>
             </div>
           </div>
+          
+          <div style="text-align: center;">
+            <button onclick="JSWipeData()" class="btn btn-secondary">Borrar datos guardados</button>
+          </div>
+
       	</div>
   	</div>
 
